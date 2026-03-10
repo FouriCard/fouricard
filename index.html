@@ -473,7 +473,7 @@ function openProduct(id) {
 
   document.getElementById('productVisual').innerHTML = `
     <div class="big-logo" style="background:${p.bg};padding:0;overflow:hidden"><img src="${p.img}" style="width:100%;height:100%;object-fit:cover" alt="${p.brand}"></div>
-    <h2 style="color:${p.color === '#000000' ? '#333' : p.color}">${p.brand}</h2>
+    <h2 style="color:#E50914">${p.brand}</h2>
     <p>${p.name}</p>
   `;
 
@@ -486,7 +486,7 @@ function openProduct(id) {
             border: 2px solid var(--border); border-radius: 12px; padding: 14px 16px;
             cursor: pointer; transition: all 0.2s; display:flex; justify-content:space-between; align-items:center;
           ">
-            <div style="font-family:'Tajawal',sans-serif;font-size:1.2rem;font-weight:900;color:${p.color === '#000000' ? '#333' : p.color}">${plan.price} ر.س</div>
+            <div style="font-family:'Tajawal',sans-serif;font-size:1.2rem;font-weight:900;color:#E50914">${plan.price} ر.س</div>
             <div style="text-align:right">
               <div style="font-weight:700;font-size:0.95rem">${plan.name}</div>
               <div style="color:var(--gray);font-size:0.8rem">${plan.desc}</div>
@@ -513,7 +513,7 @@ function openProduct(id) {
     ${plansHTML}
     <div class="price-box">
       <div class="price-label">السعر المختار</div>
-      <div class="price-big" id="selectedPrice" style="color:${p.color === '#000000' ? '#333' : p.color}">اختر خطة</div>
+      <div class="price-big" id="selectedPrice" style="color:#E50914">اختر خطة</div>
       <div class="price-note">استلام فوري بعد تأكيد الدفع</div>
       <div class="qty-selector">
         <span class="qty-label">الكمية:</span>
@@ -523,7 +523,7 @@ function openProduct(id) {
           <button class="qty-btn" onclick="changeQty(1)">+</button>
         </div>
       </div>
-      <button class="add-cart-btn" style="background:${p.color === '#000000' ? '#222' : p.color};color:white" onclick="addToCartWithQty()">أضف للسلة 🛒</button>
+      <button class="add-cart-btn" style="background:#E50914;color:white" onclick="addToCartWithQty()">أضف للسلة 🛒</button>
       <button class="whatsapp-btn" onclick="contactWhatsapp('${p.name}')">📱 استفسر على واتساب</button>
     </div>
   `;
@@ -593,7 +593,7 @@ function renderCart() {
       ${cart.map(item => `
         <div class="cart-item">
           <button class="remove-btn" onclick="removeFromCart('${item.cartId}')">🗑️</button>
-          <div class="cart-item-total" style="color:${item.color}">${item.price * item.qty} ر.س</div>
+          <div class="cart-item-total" style="color:#E50914">${item.price * item.qty} ر.س</div>
           <div class="cart-item-qty">
             <button class="qty-btn" onclick="updateQty('${item.cartId}',-1)">-</button>
             <span class="qty-num">${item.qty}</span>
