@@ -158,14 +158,16 @@
   .cart-empty .empty-icon { font-size: 4rem; margin-bottom: 16px; }
   .cart-empty p { font-size: 1.1rem; margin-bottom: 24px; }
   .cart-items { display: flex; flex-direction: column; gap: 16px; margin-bottom: 30px; }
-  .cart-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 20px; display: flex; align-items: center; gap: 16px; }
-  .cart-item-logo { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 900; flex-shrink: 0; }
+  .cart-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .cart-item-top { display: flex; align-items: center; gap: 12px; }
+  .cart-item-logo { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 900; flex-shrink: 0; overflow: hidden; }
   .cart-item-info { flex: 1; text-align: right; }
-  .cart-item-name { font-weight: 700; font-size: 1rem; margin-bottom: 4px; }
-  .cart-item-price { color: var(--gray); font-size: 0.85rem; }
+  .cart-item-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; line-height: 1.4; }
+  .cart-item-price { color: var(--gray); font-size: 0.82rem; }
+  .cart-item-bottom { display: flex; align-items: center; justify-content: space-between; }
   .cart-item-qty { display: flex; align-items: center; gap: 10px; }
-  .cart-item-total { font-family: 'Tajawal', sans-serif; font-weight: 900; font-size: 1.2rem; min-width: 70px; text-align: left; }
-  .remove-btn { background: none; border: none; color: var(--gray); cursor: pointer; font-size: 1.2rem; transition: color 0.2s; padding: 4px; }
+  .cart-item-total { font-family: 'Tajawal', sans-serif; font-weight: 900; font-size: 1.2rem; color: #E50914; }
+  .remove-btn { background: none; border: none; color: var(--gray); cursor: pointer; font-size: 1.1rem; transition: color 0.2s; padding: 4px; }
   .remove-btn:hover { color: var(--netflix); }
   .cart-summary { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
   .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; color: var(--gray); }
@@ -592,18 +594,22 @@ function renderCart() {
     <div class="cart-items">
       ${cart.map(item => `
         <div class="cart-item">
-          <button class="remove-btn" onclick="removeFromCart('${item.cartId}')">🗑️</button>
-          <div class="cart-item-total" style="color:#E50914">${item.price * item.qty} ر.س</div>
-          <div class="cart-item-qty">
-            <button class="qty-btn" onclick="updateQty('${item.cartId}',-1)">-</button>
-            <span class="qty-num">${item.qty}</span>
-            <button class="qty-btn" onclick="updateQty('${item.cartId}',1)">+</button>
+          <div class="cart-item-top">
+            <div class="cart-item-logo" style="background:${item.bg};padding:0"><img src="${item.img}" style="width:100%;height:100%;object-fit:cover" alt="${item.brand}"></div>
+            <div class="cart-item-info">
+              <div class="cart-item-name">${item.name}</div>
+              <div class="cart-item-price">${item.price} ر.س للوحدة</div>
+            </div>
           </div>
-          <div class="cart-item-info">
-            <div class="cart-item-name">${item.name}</div>
-            <div class="cart-item-price">${item.price} ر.س × ${item.qty}</div>
+          <div class="cart-item-bottom">
+            <button class="remove-btn" onclick="removeFromCart('${item.cartId}')">🗑️</button>
+            <div class="cart-item-qty">
+              <button class="qty-btn" onclick="updateQty('${item.cartId}',-1)">-</button>
+              <span class="qty-num">${item.qty}</span>
+              <button class="qty-btn" onclick="updateQty('${item.cartId}',1)">+</button>
+            </div>
+            <div class="cart-item-total">${item.price * item.qty} ر.س</div>
           </div>
-          <div class="cart-item-logo" style="background:${item.bg};padding:0;overflow:hidden"><img src="${item.img}" style="width:100%;height:100%;object-fit:cover" alt="${item.brand}"></div>
         </div>
       `).join('')}
     </div>
