@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FouriCard | بطاقات رقمية فورية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --dark: #111111;
+    --card-bg: #181818;
+    --border: #2a2a2a;
+    --white: #f5f5f0;
+    --gray: #888;
+    --netflix: #E50914;
+    --shahid: #00A9E0;
+    --ps: #003087;
+    --xbox: #107C10;
+    --spotify: #1DB954;
+    --gold: #F5C518;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 80% 50% at 20% 20%, rgba(229,9,20,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(29,185,84,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+  }
+
+  .logo {
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 900;
+    font-size: 1.5rem;
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--netflix); }
+
+  .nav-badge {
+    background: var(--netflix);
+    color: white;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 20px;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(229,9,20,0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(229,9,20,0); }
+  }
+
+  .nav-contact {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--gray);
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-contact:hover { color: var(--white); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    z-index: 1;
+    padding: 90px 5% 70px;
+    text-align: center;
+  }
+
+  .hero-tag {
+    display: inline-block;
+    background: rgba(229,9,20,0.12);
+    border: 1px solid rgba(229,9,20,0.3);
+    color: var(--netflix);
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 6px 18px;
+    border-radius: 20px;
+    margin-bottom: 28px;
+    letter-spacing: 1px;
+  }
+
+  .hero h1 {
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 900;
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 .highlight {
+    color: var(--netflix);
+    position: relative;
+    display: inline-block;
+  }
+
+  .hero h1 .highlight::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    right: 0;
+    left: 0;
+    height: 3px;
+    background: var(--netflix);
+    border-radius: 2px;
+    animation: underline-grow 1s ease 0.5s both;
+    transform-origin: right;
+  }
+
+  @keyframes underline-grow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
+  .hero p {
+    color: var(--gray);
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.8;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--white);
+  }
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--gray);
+    margin-top: 2px;
+  }
+
+  /* FILTERS */
+  .filters {
+    position: relative;
+    z-index: 1;
+    padding: 0 5% 40px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .filter-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--gray);
+    padding: 9px 22px;
+    border-radius: 25px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--netflix);
+    border-color: var(--netflix);
+    color: white;
+  }
+
+  /* PRODUCTS GRID */
+  .products {
+    position: relative;
+    z-index: 1;
+    padding: 0 5% 80px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .product-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    cursor: pointer;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .product-card:nth-child(1) { animation-delay: 0.05s; }
+  .product-card:nth-child(2) { animation-delay: 0.1s; }
+  .product-card:nth-child(3) { animation-delay: 0.15s; }
+  .product-card:nth-child(4) { animation-delay: 0.2s; }
+  .product-card:nth-child(5) { animation-delay: 0.25s; }
+  .product-card:nth-child(6) { animation-delay: 0.3s; }
+  .product-card:nth-child(7) { animation-delay: 0.35s; }
+  .product-card:nth-child(8) { animation-delay: 0.4s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .card-header {
+    padding: 28px 24px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .card-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 24px;
+    left: 24px;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .brand-logo {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+
+  .card-meta { text-align: right; }
+  .card-brand { font-size: 0.78rem; color: var(--gray); margin-bottom: 3px; }
+  .card-name { font-weight: 700; font-size: 1.05rem; }
+
+  .badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+  }
+  .badge-hot { background: rgba(229,9,20,0.2); color: var(--netflix); border: 1px solid rgba(229,9,20,0.3); }
+  .badge-new { background: rgba(29,185,84,0.2); color: var(--spotify); border: 1px solid rgba(29,185,84,0.3); }
+  .badge-best { background: rgba(245,197,24,0.2); color: var(--gold); border: 1px solid rgba(245,197,24,0.3); }
+
+  .card-body {
+    padding: 20px 24px;
+  }
+
+  .card-desc {
+    color: var(--gray);
+    font-size: 0.85rem;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .card-features {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+
+  .feature {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: #bbb;
+  }
+  .feature-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .card-footer {
+    padding: 0 24px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .price-group { text-align: right; }
+  .price-label { font-size: 0.75rem; color: var(--gray); }
+  .price {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    line-height: 1;
+  }
+  .price-sub { font-size: 0.75rem; color: var(--gray); margin-top: 2px; }
+
+  .buy-btn {
+    padding: 11px 24px;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .buy-btn:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+  }
+
+  /* SECTION TITLE */
+  .section-title {
+    position: relative;
+    z-index: 1;
+    padding: 0 5% 32px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .section-title h2 {
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+  }
+  .title-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* TRUST STRIP */
+  .trust-strip {
+    position: relative;
+    z-index: 1;
+    margin: 0 5% 60px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: right;
+  }
+  .trust-icon {
+    font-size: 1.8rem;
+    flex-shrink: 0;
+  }
+  .trust-text strong {
+    display: block;
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+  .trust-text span {
+    color: var(--gray);
+    font-size: 0.8rem;
+  }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 30px 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  footer p { color: var(--gray); font-size: 0.82rem; }
+  .footer-contact {
+    display: flex;
+    gap: 16px;
+  }
+  .footer-contact a {
+    color: var(--gray);
+    text-decoration: none;
+    font-size: 0.82rem;
+    transition: color 0.2s;
+  }
+  .footer-contact a:hover { color: var(--white); }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    animation: modalIn 0.3s ease;
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.9) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-icon { font-size: 3rem; margin-bottom: 16px; }
+  .modal h3 { font-family: 'Tajawal', sans-serif; font-weight: 800; font-size: 1.4rem; margin-bottom: 10px; }
+  .modal p { color: var(--gray); font-size: 0.9rem; line-height: 1.7; margin-bottom: 28px; }
+
+  .modal-btns {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .btn-whatsapp {
+    background: #25D366;
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex: 1;
+  }
+  .btn-whatsapp:hover { filter: brightness(1.1); transform: translateY(-2px); }
+
+  .btn-close {
+    background: var(--border);
+    color: var(--gray);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-close:hover { background: #333; color: var(--white); }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 2rem; }
+    .hero-stats { gap: 24px; }
+    nav { padding: 0 4%; }
+    .products { grid-template-columns: 1fr; padding: 0 4% 60px; }
+    .trust-strip { padding: 20px; }
+    .modal { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-contact" href="#">
+    <span>📱</span>
+    <span>تواصل معنا</span>
+  </a>
+  <div class="logo">Fouri<span>Card</span></div>
+  <div class="nav-badge">⚡ توصيل فوري</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">✦ بطاقات رقمية أصلية ١٠٠٪</div>
+  <h1>بطاقاتك <span class="highlight">الرقمية</span><br>بين يديك فوراً</h1>
+  <p>اشترِ بطاقات نتفليكس، شاهد، بلايستيشن، Xbox وسبوتيفاي بأسعار تنافسية وتوصيل فوري على واتساب</p>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">+500</div>
+      <div class="stat-label">عميل راضٍ</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color: var(--spotify);">⚡ فوري</div>
+      <div class="stat-label">وقت التوصيل</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">١٠٠٪</div>
+      <div class="stat-label">بطاقات أصلية</div>
+    </div>
+  </div>
+</section>
+
+<!-- FILTERS -->
+<div class="filters">
+  <button class="filter-btn active" onclick="filterProducts('all', this)">الكل</button>
+  <button class="filter-btn" onclick="filterProducts('netflix', this)">🎬 نتفليكس</button>
+  <button class="filter-btn" onclick="filterProducts('shahid', this)">📺 شاهد</button>
+  <button class="filter-btn" onclick="filterProducts('gaming', this)">🎮 ألعاب</button>
+  <button class="filter-btn" onclick="filterProducts('spotify', this)">🎵 سبوتيفاي</button>
+</div>
+
+<!-- PRODUCTS -->
+<div class="section-title">
+  <h2>جميع المنتجات</h2>
+  <div class="title-line"></div>
+</div>
+
+<div class="products" id="productsGrid">
+
+  <!-- Netflix 100 -->
+  <div class="product-card" data-cat="netflix" onclick="openModal('بطاقة نتفليكس 100 ريال', '🎬')">
+    <div class="card-header">
+      <div class="brand-logo" style="background:rgba(229,9,20,0.15); color:var(--netflix);">N</div>
+      <div class="card-meta">
+        <div class="card-brand">NETFLIX</div>
+        <div class="card-name">بطاقة هدية نتفليكس</div>
+      </div>
+      <span class="badge badge-hot">🔥 الأكثر طلباً</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">استمتع بأفضل الأفلام والمسلسلات العالمية بجودة 4K على جميع أجهزتك</p>
+      <div class="card-features">
+        <div class="feature"><div class="feature-dot" style="background:var(--netflix)"></div>صالحة لتجديد الاشتراك</div>
+        <div class="feature"><div class="feature-dot" style="background:var(--netflix)"></div>تعمل على جميع الأجهزة</div>
+        <div class="feature"><div class="feature-dot" style="background:var(--netflix)"></div>توصيل فوري على واتساب</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="buy-btn" style="background:var(--netflix); color:white;">اشترِ الآن</button>
+      <div class="price-group">
+        <div class="price-label">السعر</div>
+        <div class="price" style="color:var(--netflix);">15 <small style="font-size:0.8rem">ر.س</small></div>
+        <div class="price-sub">توصيل فوري</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Netflix 200 -->
+  <div class="product-card" data-cat="netflix" onclick="openModal('بطاقة نتفليكس 200 ريال', '🎬')">
+    <div class="card-header">
+      <div class="brand-logo" style="background:rgba(229,9,20,0.15); color:var(--netflix);">N</div>
+      <div class="card-meta">
+        <div class="card-brand">NETFLIX</div>
+        <div class="card-name">بطاقة هدية نتفليكس</div>
+      </div>
+      <span class="badge badge-best">⭐ قيمة أعلى</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">بطاقة برصيد أعلى لتجديد اشتراكك لفترة أطول ومشاهدة بلا انقطاع</p>
+      <div class="card-features">
+        <div class="feature"><div class="feature-dot" style="background:var(--netflix)"></div>صالحة لتجديد الاشتراك</div>
+        <div class="feature"><div class="feature-dot" style="background:var(--netflix)"></div>توفير أكبر مقارنة بالبطاقة الصغيرة</div>
+        <div class="feature"><div class="feature-dot" style="background:var(--netflix)"></div>توصيل فوري على واتساب</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="buy-btn" style="background:var(--netflix); color:white;">اشترِ الآن</button>
+      <div class="price-group">
+        <div class="price-label">السعر</div>
+        <div class="price" style="color:var(--netflix);">15 <small style="font-size:0.8rem">ر.س</small></div>
+        <div class="price-sub">توصيل فوري</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shahid -->
+  <div class="product-card" data-cat="shahid" onclick="openModal('بطاقة شاهد VIP', '📺')">
+    <div class="card-header">
+      <div class="brand-logo" style="background:rgba(0,169,224,0.15); color:var(--shahid);">ش</div>
+      <div class="card-meta">
+        <div class="card-brand">SHAHID</div>
+        <div class="card-name">بطاقة شاهد VIP</div>
+      </div>
+      <span class="badge badge-new">✨ جديد</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">استمتع بأحدث المسلسلات العربية والمحتوى الحصري من MBC Group</p>
+      <div class="card-features">
+        <div class="feature"><div class="feature-dot" style="background:var(--shahid)"></div>محتوى عربي حصري</div>
+        <div class="feature"><div class="feature-dot" style="background:var(--shahid)"></div>بث مباشر للمباريات</div>
+        <div class="feature"><div class="feature-dot" style="background:var(--shahid)"></div>توصيل فوري على واتساب</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="buy-btn" style="background:var(--shahid); color:white;">اشترِ الآن</button>
+      <div class="price-group">
+        <div class="price-label">السعر</div>
+        <div class="price" style="color:var(--shahid);">15 <small style="font-size:0.8rem">ر.س</small></div>
+        <div class="price-sub">توصيل فوري</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PlayStation -->
+  <div class="product-card" data-cat="gaming" onclick="openModal('بطاقة PlayStation Store', '🎮')">
+    <div class="card-header">
+      <div class="brand-logo" style="background:rgba(0,48,135,0.25); color:#4169E1;">PS</div>
+      <div class="card-meta">
+        <div class="card-brand">PLAYSTATION</div>
+        <div class="card-name">PlayStation Store</div>
+      </div>
+      <span class="badge badge-hot">🔥 رائجة</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">اشترِ أحدث الألعاب والإضافات والاشتراكات من متجر PlayStation مباشرة</p>
+      <div class="card-features">
+        <div class="feature"><div class="feature-dot" style="background:#4169E1"></div>للـ PS4 و PS5</div>
+        <div class="feature"><div class="feature-dot" style="background:#4169E1"></div>رصيد يُضاف فوراً لحسابك</div>
+        <div class="feature"><div class="feature-dot" style="background:#4169E1"></div>توصيل فوري على واتساب</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="buy-btn" style="background:#4169E1; color:white;">اشترِ الآن</button>
+      <div class="price-group">
+        <div class="price-label">السعر</div>
+        <div class="price" style="color:#4169E1;">15 <small style="font-size:0.8rem">ر.س</small></div>
+        <div class="price-sub">توصيل فوري</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Xbox -->
+  <div class="product-card" data-cat="gaming" onclick="openModal('بطاقة Xbox Gift Card', '🎮')">
+    <div class="card-header">
+      <div class="brand-logo" style="background:rgba(16,124,16,0.15); color:var(--xbox);">X</div>
+      <div class="card-meta">
+        <div class="card-brand">XBOX / MICROSOFT</div>
+        <div class="card-name">Xbox Gift Card</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">اشترِ ألعاب Xbox وGame Pass واشتراكات Microsoft مباشرة بأسعار ممتازة</p>
+      <div class="card-features">
+        <div class="feature"><div class="feature-dot" style="background:var(--xbox)"></div>تعمل على Xbox و PC</div>
+        <div class="feature"><div class="feature-dot" style="background:var(--xbox)"></div>صالحة لـ Game Pass</div>
+        <div class="feature"><div class="feature-dot" style="background:var(--xbox)"></div>توصيل فوري على واتساب</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="buy-btn" style="background:var(--xbox); color:white;">اشترِ الآن</button>
+      <div class="price-group">
+        <div class="price-label">السعر</div>
+        <div class="price" style="color:var(--xbox);">15 <small style="font-size:0.8rem">ر.س</small></div>
+        <div class="price-sub">توصيل فوري</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spotify -->
+  <div class="product-card" data-cat="spotify" onclick="openModal('اشتراك Spotify Premium', '🎵')">
+    <div class="card-header">
+      <div class="brand-logo" style="background:rgba(29,185,84,0.15); color:var(--spotify);">♪</div>
+      <div class="card-meta">
+        <div class="card-brand">SPOTIFY</div>
+        <div class="card-name">Spotify Premium</div>
+      </div>
+      <span class="badge badge-new">✨ جديد</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">استمع للموسيقى بلا إعلانات وبجودة عالية وبدون اتصال بالإنترنت</p>
+      <div class="card-features">
+        <div class="feature"><div class="feature-dot" style="background:var(--spotify)"></div>بلا إعلانات نهائياً</div>
+        <div class="feature"><div class="feature-dot" style="background:var(--spotify)"></div>تحميل للاستماع بدون نت</div>
+        <div class="feature"><div class="feature-dot" style="background:var(--spotify)"></div>توصيل فوري على واتساب</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="buy-btn" style="background:var(--spotify); color:white;">اشترِ الآن</button>
+      <div class="price-group">
+        <div class="price-label">السعر</div>
+        <div class="price" style="color:var(--spotify);">15 <small style="font-size:0.8rem">ر.س</small></div>
+        <div class="price-sub">توصيل فوري</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spotify 3 months -->
+  <div class="product-card" data-cat="spotify" onclick="openModal('Spotify Premium - 3 أشهر', '🎵')">
+    <div class="card-header">
+      <div class="brand-logo" style="background:rgba(29,185,84,0.15); color:var(--spotify);">♪</div>
+      <div class="card-meta">
+        <div class="card-brand">SPOTIFY</div>
+        <div class="card-name">Premium - 3 أشهر</div>
+      </div>
+      <span class="badge badge-best">⭐ وفّر أكثر</span>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">اشتراك ثلاثة أشهر كاملة بسعر موفّر – الخيار الأذكى للموسيقى</p>
+      <div class="card-features">
+        <div class="feature"><div class="feature-dot" style="background:var(--spotify)"></div>3 أشهر متواصلة</div>
+        <div class="feature"><div class="feature-dot" style="background:var(--spotify)"></div>توفير مقارنة بالشهري</div>
+        <div class="feature"><div class="feature-dot" style="background:var(--spotify)"></div>توصيل فوري على واتساب</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="buy-btn" style="background:var(--spotify); color:white;">اشترِ الآن</button>
+      <div class="price-group">
+        <div class="price-label">السعر</div>
+        <div class="price" style="color:var(--spotify);">15 <small style="font-size:0.8rem">ر.س</small></div>
+        <div class="price-sub">توصيل فوري</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PS Plus -->
+  <div class="product-card" data-cat="gaming" onclick="openModal('PlayStation Plus Essential', '🎮')">
+    <div class="card-header">
+      <div class="brand-logo" style="background:rgba(0,48,135,0.25); color:#4169E1;">PS+</div>
+      <div class="card-meta">
+        <div class="card-brand">PLAYSTATION</div>
+        <div class="card-name">PS Plus Essential</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">العب أونلاين واحصل على ألعاب مجانية شهرياً مع PlayStation Plus</p>
+      <div class="card-features">
+        <div class="feature"><div class="feature-dot" style="background:#4169E1"></div>ألعاب مجانية كل شهر</div>
+        <div class="feature"><div class="feature-dot" style="background:#4169E1"></div>لعب أونلاين غير محدود</div>
+        <div class="feature"><div class="feature-dot" style="background:#4169E1"></div>توصيل فوري على واتساب</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="buy-btn" style="background:#4169E1; color:white;">اشترِ الآن</button>
+      <div class="price-group">
+        <div class="price-label">السعر</div>
+        <div class="price" style="color:#4169E1;">15 <small style="font-size:0.8rem">ر.س</small></div>
+        <div class="price-sub">توصيل فوري</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="trust-item">
+    <div class="trust-icon">⚡</div>
+    <div class="trust-text">
+      <strong>توصيل فوري</strong>
+      <span>خلال دقائق على واتساب</span>
+    </div>
+  </div>
+  <div class="trust-item">
+    <div class="trust-icon">🔒</div>
+    <div class="trust-text">
+      <strong>بطاقات أصلية</strong>
+      <span>مضمونة ١٠٠٪</span>
+    </div>
+  </div>
+  <div class="trust-item">
+    <div class="trust-icon">💳</div>
+    <div class="trust-text">
+      <strong>دفع آمن</strong>
+      <span>مدى، سداد، تحويل</span>
+    </div>
+  </div>
+  <div class="trust-item">
+    <div class="trust-icon">🎧</div>
+    <div class="trust-text">
+      <strong>دعم مستمر</strong>
+      <span>نرد عليك طول اليوم</span>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 FouriCard – جميع الحقوق محفوظة</p>
+  <div class="footer-contact">
+    <a href="#">📱 واتساب</a>
+    <a href="#">📸 انستقرام</a>
+    <a href="#">🐦 تيك توك</a>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-icon" id="modalIcon">🎬</div>
+    <h3 id="modalTitle">اطلب الآن</h3>
+    <p id="modalDesc">سيتم تحويلك لواتساب لإتمام الطلب. سنرسل لك الكود فوراً بعد التأكيد!</p>
+    <div class="modal-btns">
+      <button class="btn-whatsapp" onclick="goWhatsapp()">
+        📱 اطلب على واتساب
+      </button>
+      <button class="btn-close" onclick="document.getElementById('modalOverlay').classList.remove('open')">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentProduct = '';
+
+  function openModal(name, icon) {
+    currentProduct = name;
+    document.getElementById('modalIcon').textContent = icon;
+    document.getElementById('modalTitle').textContent = name;
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  function closeModal(e) {
+    if (e.target === document.getElementById('modalOverlay')) {
+      document.getElementById('modalOverlay').classList.remove('open');
+    }
+  }
+
+  function goWhatsapp() {
+    const msg = encodeURIComponent(`السلام عليكم، أبي أطلب: ${currentProduct}`);
+    // غيّر الرقم لرقمك الحقيقي
+    window.open(`https://wa.me/966551856922?text=${msg}`, '_blank');
+  }
+
+  function filterProducts(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    document.querySelectorAll('.product-card').forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.style.display = '';
+        card.style.animation = 'none';
+        card.offsetHeight;
+        card.style.animation = 'fadeUp 0.4s ease both';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
+</body>
+</html>
