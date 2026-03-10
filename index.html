@@ -546,7 +546,16 @@ function changeQty(delta) {
   document.getElementById('qtyNum').textContent = currentQty;
 }
 function addToCartWithQty() {
-  for(let i=0; i<currentQty; i++) addToCart(currentProduct.id, false);
+  if(!selectedPlan) { showToast('⚠️ اختر خطة أولاً'); return; }
+  const itemToAdd = {
+    ...currentProduct,
+    price: selectedPlan.price,
+    name: currentProduct.brand + ' - ' + selectedPlan.name,
+    cartId: currentProduct.id + '-' + selectedPlan.name
+  };
+  const existing = cart.find(i => i.cartId === itemToAdd.cartId);
+  if(existing) existing.qty += currentQty;
+  else cart.push({...itemToAdd, qty: currentQty});
   currentQty = 1;
   showToast(`✅ تمت الإضافة للسلة`);
   updateCartCount();
@@ -583,12 +592,12 @@ function renderCart() {
     <div class="cart-items">
       ${cart.map(item => `
         <div class="cart-item">
-          <button class="remove-btn" onclick="removeFromCart(${item.id})">🗑️</button>
+          <button class="remove-btn" onclick="removeFromCart('${item.cartId}')">🗑️</button>
           <div class="cart-item-total" style="color:${item.color}">${item.price * item.qty} ر.س</div>
           <div class="cart-item-qty">
-            <button class="qty-btn" onclick="updateQty(${item.id},-1)">-</button>
+            <button class="qty-btn" onclick="updateQty('${item.cartId}',-1)">-</button>
             <span class="qty-num">${item.qty}</span>
-            <button class="qty-btn" onclick="updateQty(${item.id},1)">+</button>
+            <button class="qty-btn" onclick="updateQty('${item.cartId}',1)">+</button>
           </div>
           <div class="cart-item-info">
             <div class="cart-item-name">${item.name}</div>
@@ -610,17 +619,17 @@ function renderCart() {
   `;
 }
 
-function removeFromCart(id) {
-  cart = cart.filter(i => i.id !== id);
+function removeFromCart(cartId) {
+  cart = cart.filter(i => i.cartId !== cartId);
   updateCartCount();
   renderCart();
 }
 
-function updateQty(id, delta) {
-  const item = cart.find(i => i.id === id);
+function updateQty(cartId, delta) {
+  const item = cart.find(i => i.cartId === cartId);
   if(item) {
     item.qty += delta;
-    if(item.qty <= 0) cart = cart.filter(i => i.id !== id);
+    if(item.qty <= 0) cart = cart.filter(i => i.cartId !== cartId);
   }
   updateCartCount();
   renderCart();
