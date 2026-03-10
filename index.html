@@ -283,15 +283,7 @@
   .welcome-close { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--netflix); color: white; font-family: 'Cairo', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; }
   .welcome-skip { background: none; border: none; color: var(--gray); font-family: 'Cairo', sans-serif; font-size: 0.82rem; cursor: pointer; margin-top: 12px; display: block; width: 100%; }
 
-  /* COUNTDOWN */
-  .countdown-bar { background: rgba(245,197,24,0.1); border: 1px solid rgba(245,197,24,0.3); border-radius: 10px; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-  .countdown-label { font-size: 0.82rem; color: #F5C518; font-weight: 700; }
-  .countdown-timer { font-family: 'Tajawal', sans-serif; font-size: 1.1rem; font-weight: 900; color: #F5C518; letter-spacing: 2px; }
 
-  /* SOLD COUNT */
-  .sold-badge { font-size: 0.72rem; color: var(--gray); display: flex; align-items: center; gap: 4px; margin-top: 4px; }
-  .sold-dot { width: 6px; height: 6px; border-radius: 50%; background: #1DB954; animation: blink 1.5s infinite; }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
   /* COMPARE TABLE */
   .compare-section { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 20px; overflow-x: auto; }
@@ -358,6 +350,12 @@
 <!-- ===== HOME PAGE ===== -->
 <div id="page-home" class="page active">
   <section class="hero">
+    <!-- TYPEWRITER -->
+    <div style="position:relative;z-index:1;margin-bottom:28px;height:70px;display:flex;align-items:center;justify-content:center">
+      <div id="typewriterText" style="font-family:'Tajawal',sans-serif;font-size:2.6rem;font-weight:900;letter-spacing:5px;direction:ltr">
+        <span id="twFouri" style="color:white"></span><span id="twCard" style="color:#E50914"></span><span id="twCursor" style="color:#E50914;animation:blink 0.7s infinite">|</span>
+      </div>
+    </div>
     <div class="hero-tag">✦ بطاقات رقمية أصلية ١٠٠٪</div>
     <h1>بطاقاتك <span class="highlight">الرقمية</span><br>بين يديك فوراً</h1>
     <p>اشترِ اشتراكات نتفليكس، شاهد، وثمانية بأسعار تنافسية واستلام فوري</p>
@@ -379,9 +377,12 @@
     <button class="filter-btn active" onclick="filterProducts('all',this)">الكل</button>
     <button class="filter-btn" onclick="filterProducts('netflix',this)">🎬 نتفليكس</button>
     <button class="filter-btn" onclick="filterProducts('shahid',this)">📺 شاهد</button>
-    
     <button class="filter-btn" onclick="filterProducts('thamanya',this)">⚽ ثمانية</button>
+    <button class="filter-btn" onclick="filterProducts('osn',this)">🎥 OSN+</button>
+    <button class="filter-btn" onclick="filterProducts('youtube',this)">▶️ يوتيوب</button>
+    <button class="filter-btn" onclick="filterProducts('amazon',this)">📦 أمازون</button>
   </div>
+
 
   <div class="section-title"><h2>جميع المنتجات</h2><div class="title-line"></div></div>
 
@@ -408,7 +409,15 @@
       <h3>✍️ اترك تعليقك</h3>
       <div class="comment-inputs">
         <input type="text" class="form-input" id="commentName" placeholder="اسمك">
-        <input type="text" class="form-input" id="commentProduct" placeholder="المنتج (اختياري)">
+        <select class="form-input" id="commentProduct" style="background:var(--dark);border:1px solid var(--border);color:var(--white);padding:12px 16px;border-radius:10px;font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;width:100%;cursor:pointer">
+          <option value="">المنتج (اختياري)</option>
+          <option value="نتفليكس">نتفليكس</option>
+          <option value="شاهد">شاهد VIP</option>
+          <option value="ثمانية">ثمانية كورة</option>
+          <option value="OSN+">OSN+</option>
+          <option value="يوتيوب بريميوم">يوتيوب بريميوم</option>
+          <option value="أمازون برايم">أمازون برايم</option>
+        </select>
       </div>
       <textarea class="comment-textarea" id="commentText" placeholder="شاركنا تجربتك..."></textarea>
       <div class="comment-stars-select" id="starsSelect">
@@ -577,12 +586,18 @@
 <script>
 // ===== DATA =====
 const products = [
-  { id:1, cat:'netflix', brand:'NETFLIX', name:'بطاقة هدية نتفليكس', desc:'استمتع بأفضل الأفلام والمسلسلات العالمية بجودة 4K على جميع أجهزتك بدون انقطاع.', price:15, img:'data:image/webp;base64,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', color:'#E50914', bg:'#1a0000', sold:128, badge:'badge-hot', badgeText:'🔥 الأكثر طلباً', features:['صالحة لتجديد الاشتراك','تعمل على جميع الأجهزة','استلام فوري بعد الدفع'] },
+  { id:1, cat:'netflix', brand:'NETFLIX', name:'اشتراك نتفليكس', desc:'استمتع بأفضل الأفلام والمسلسلات العالمية بجودة 4K على جميع أجهزتك بدون انقطاع.', price:15, img:'data:image/webp;base64,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', color:'#E50914', bg:'#1a0000', sold:128, features:['صالحة لتجديد الاشتراك','تعمل على جميع الأجهزة','استلام فوري بعد الدفع'] },
   
-  { id:3, cat:'shahid', brand:'SHAHID', name:'بطاقة شاهد VIP', desc:'استمتع بأحدث المسلسلات العربية والمحتوى الحصري من MBC Group وبث المباريات.', price:15, img:'data:image/webp;base64,UklGRnwGAABXRUJQVlA4IHAGAAAQLACdASoFAQ4BPp1OoEwlpSMiJtdYELATiWNu4MIWnGI/3S5ruAq96gbf5LfAgfx/qul99mfuAfqB05vMR+xv7Hdh3/VeoB/Uf871k/od+W57OX7T+l3qxkJcp/gppbmhv8ELETvrUQHBG7QEg9HQuIvQQtx/4bn1S0QHBqMMvWq9y9aiA4IkfV+jJF3UAHUqyebS1uECu+HKfKLdf9/dWgW76D1u1BK9HN5lUuu+GmYMshuIf5qBd61wgSv2HO1qEaIBngtmADf5OXBumH4doMhBcks4hbfhuAdae2K8PMWg1FfKiHisilSyzYPovj/SnxkPSPdJOP43+GXrUV43PqAcGn0xgtXtkW8GQFZFvBkBLQHKTBUuTPmov6w1MbE8SmS8iw4gziC0VmFLsN0weAeDxgeeghbhuiwKd5pljQLxcHioPqAcGowy9aiA4NRhl6xgCIgODUYZeg4W4cLuWwossfYEt+aAAPqz69ZZg1L/Z3f0Zv6M3+DAKrdVosQKoQkPyLUdinMFi/6bvTBL/LeorTAX5Xsf+AJes8nxAkMWJ0G17OaoxDqxDNWeJxDAXQAq2/JudskJugVmOs1ifSxa3mys/1JvN67iL39m9jJy541OvNylojPLKCA90L+pprr0k7sw0xagkovZuhLMQREdUKN+EzICYor4KP3Sm60G7yPd1hW2S6Lo32boGLhnKyrWoOsbwx//dxBxtKUZEcQXHSm9p0Vt8LFsTr9/NiPBjPKSqopIv4IRDPZGTZ/LS4bak3AeOTkwv4U7XPsMyKruuanEg/6DuBsxqyO5pGQ1Gub/Tkl/IPo2ykmNH4gGrvWJfeioe9txJQ4q6+mGgRLaCzd5K3pqNrVd3wAOAX7KVT+Mvfp84+zCVCZkCvFynRFxz1QaD3GU9cfSa82Ieca/OrIcG5eOkmU8ywCR0ptdcyY+4LZ0oMigaSmacw8aSVXnhGBSoxCB+9KDpPvHiCFSYt4slDGUdWZnQvvaYYQandUOSGdp5J8yvOqv6fdep3uKyEU/HHOidlXf+DU7LCvKdlgTlwCkWqwMCAVMHxlxhx2GT6BW6dWUnD6fU3drYvnke8AWZVPuJzpiV+1FyzKn8nUBpEp+GTh6WNKhw06f4B95LV3rFYOtu99eUQVRc1vyLJEtNSXVX4nePWX/I9K4XqIQj0S00qTiT6ciV2455AuR3uGL7zI4KT6aTHxY+ZHs7W1uMZ6EdzQYL6TYN01t0iDu2rDT1CYKyAQ4QXShjE3Mj018BBDPm88vo0inTPOeJIkGuf310SlbuOwDvwrl/dejmkvuoFg2U2lO34wI0YTc2Q/geg3EL0Wa8CIXmJc6sYoRzSsrmp1LN/yYnQYzOlHATZL2UJlJJTDEblEQWJ+Bp7CQXazkXWNvjS6H4rHq05vEo8EorvYUJIRxw/W2DDtMoETjKdAiZJDtD8/L5axBpTrBUyfFA5t9FtfJGpJnTc6phZC/I7ofnh/l75osQldJvUeGYpgwzY1/APvh1frou/n+rSScZ4Df+4rVT9JGVYb6MwloKTPTEhp9Sw/1DdLPZ1vrymSQR5bRNmu1EAdxsvabfk1pGd5f7ZZJtWmdTBVz0nNTWbqS9YiE14iHE/FikSiaxp5Mx3tLhf33DRHqoy6rGlN8pBG45lwqWt/eXr9xM54T7bUribf0bxpJScsx4IZipVY+MDgH6onDdWS9DRfGnNoAz+OA3Lp9Yxz6yikXPDXDbAcy9hsNSSPMh0E9CZ/yXmcxQi7NI0/XhXuzgMdI0CxwAAuwBzuxJVLgbnBeqI8YqKPt8wDjKpKcEoMVar2WcC2MxoD87VAuqECzL2FWwkADyw9VIX7MNLNSVk+KLHjNhxY85CLltq/jPyNZ+4T1WeUWTsOlJhKz+IYEMDTrUNZDL1MsXB2X4QZ3tzWVDTDvdwsSuO6Q3dNN9XFQvNRH9yIGJ/EBLPbMeuv69km30y9JbMk1l/qz3FPHOJNCB6+ItkvD+V8NiwkRDYPPY8rxR8J9HBCDzA1TPCSavLhw1rtTCn3cLUJitYCskz4N5R6+lEABnL7w9WkUAhhZbylIc91Jqf1+auMpY+t8k7dp/t4HXcxDIkj1Qb3eZEiB1P0nrbyuzDjr/89Z5vBMJt5w2ezA1uhbgQNhTH23C4SUYDFSebKeXTqI+CSLp9EjPnkrMudqAAAA', color:'#00A9E0', bg:'#001a26', sold:64, badge:'badge-new', badgeText:'✨ جديد', features:['محتوى عربي حصري','بث مباشر للمباريات','استلام فوري بعد الدفع'] },
+  { id:3, cat:'shahid', brand:'SHAHID', name:'اشتراك شاهد VIP', desc:'استمتع بأحدث المسلسلات العربية والمحتوى الحصري من MBC Group وبث المباريات.', price:15, img:'data:image/webp;base64,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', color:'#00A9E0', bg:'#001a26', sold:64, features:['محتوى عربي حصري','بث مباشر للمباريات','استلام فوري بعد الدفع'] },
   
   
-  { id:6, cat:'thamanya', brand:'ثمانية', name:'اشتراك ثمانية كورة', desc:'تابع أحدث أخبار كرة القدم والتحليلات والبودكاست الرياضي مع منصة ثمانية المتخصصة.', price:15, img:'data:image/webp;base64,UklGRs4DAABXRUJQVlA4IMIDAACwIgCdASoGAQ4BPp1Oo00lpKMiI7XYALATiWlu4XKRG+xI/w2h8evOcR+8f4nhBlA8DNIFOtf0Xis+mP2Q+A/os/uB7Gf6wBVdkFUuqnxQc2HaapdVPig5sO01S6qfFBzYdpql1U+KDmw48u79mw7TVLqlAEowB3HXL9hKDmw7TVLfZMf+qYM71bCapdVPigTb5NXmeL6F1T36iOzC6qfFBsk74yf1tZgvdPmvLMYxCh+0YfYGU1UwdoHoeE4ZVF8ldWTgCS6xyDFw7TVLfTDGM7c6w6r61VutWoJUO3GmqXVT4QvDTALRz1t6TaEtS9OVvNSDmw7TVJnvERzKaqfFBzYdpql1U+KDmw7TVLqp8UHNh2mqXVT4oObDtNS4AP7+sMAAAMoJTvPkecwzmQspsz5ropj3AMqE2UKsRapzfJepYpISDm0NPrZwz5h0nEqKMAxTOSZJL9yq4Qi3gHfoSzYTy0SDhNYlIWV/MS1X8bAdX9xKyPg4uoYOlwFy+OcYqXwko3AKKbYxb6vxiZuArVz/xhABcitqYcEcy2z+FUZQkumfc1fEE8/vFLqT+++RRgHNTyqKeNgW5GvgBSo/rjE6GMpjZglo6r5yKz3gYpOY2N+naxMUxvvzqPk7gNReJCA4+gnxPzeMfYNUv5VlDspCSn+BMNo7nDJqbh8kuBgfIAETr9TLntXXk0Fd2IsrS4GWVVVXsrykzeExvsNnAAlDnv64Y/GXYlSwGTe43/61/8vz0vUxRZubpLD7RQGeAaUncs/HPniRQRGVyGFcOmpgHpk18Dp9jzSdiRRF1VCNy+65zjFyb6cfWmrzUfePCwBcWEs46KsmxOAnM9yNpF3itN2DU+xCqSXCNKMBz7vQAesDpswT5BW4BkqO2VS947gy/ALPmczQ3uwVPN+835+9TLuSv0PQDT1eO6HbMa7mAWIZQLaOdByzPjVHA1yzpFdbpYbC71Y8/lfgS8Bt1dVsqUfq+657wAqwpCxXVwcE+0f7noXPO2tyXccjrCrnsM6djeGrZr+30AINgDu4d+vCmshdREkE0H8k2bI66zcHo9lHOSpLpVK1LbDpPFVS/LJ6OeZhl8+0hTae5rGlk/zvGdtkszgY5Q6gRb02NITCO9cZgNNzMNY9NWiekj3cMYMxGJYQBZIsx6cMHCTcCLNpmo+ktQkoJx7BjSCQcEPxe0rE04aKGZMCmi4zcnniQVepNLqR0Dw+KvZp60mV92JNGYG6qfwblZz6SVWSeG0exommiw7z5HUibAAAAAAAAA==', color:'#000000', bg:'#f5f5f0', sold:31, badge:'badge-new', badgeText:'✨ جديد', features:['تغطية كروية شاملة','بودكاست وتحليلات حصرية','استلام فوري بعد الدفع'] },
+  { id:6, cat:'thamanya', brand:'ثمانية', name:'اشتراك ثمانية كورة', desc:'تابع أحدث أخبار كرة القدم والتحليلات والبودكاست الرياضي مع منصة ثمانية المتخصصة.', price:15, img:'data:image/webp;base64,UklGRs4DAABXRUJQVlA4IMIDAACwIgCdASoGAQ4BPp1Oo00lpKMiI7XYALATiWlu4XKRG+xI/w2h8evOcR+8f4nhBlA8DNIFOtf0Xis+mP2Q+A/os/uB7Gf6wBVdkFUuqnxQc2HaapdVPig5sO01S6qfFBzYdpql1U+KDmw48u79mw7TVLqlAEowB3HXL9hKDmw7TVLfZMf+qYM71bCapdVPigTb5NXmeL6F1T36iOzC6qfFBsk74yf1tZgvdPmvLMYxCh+0YfYGU1UwdoHoeE4ZVF8ldWTgCS6xyDFw7TVLfTDGM7c6w6r61VutWoJUO3GmqXVT4QvDTALRz1t6TaEtS9OVvNSDmw7TVJnvERzKaqfFBzYdpql1U+KDmw7TVLqp8UHNh2mqXVT4oObDtNS4AP7+sMAAAMoJTvPkecwzmQspsz5ropj3AMqE2UKsRapzfJepYpISDm0NPrZwz5h0nEqKMAxTOSZJL9yq4Qi3gHfoSzYTy0SDhNYlIWV/MS1X8bAdX9xKyPg4uoYOlwFy+OcYqXwko3AKKbYxb6vxiZuArVz/xhABcitqYcEcy2z+FUZQkumfc1fEE8/vFLqT+++RRgHNTyqKeNgW5GvgBSo/rjE6GMpjZglo6r5yKz3gYpOY2N+naxMUxvvzqPk7gNReJCA4+gnxPzeMfYNUv5VlDspCSn+BMNo7nDJqbh8kuBgfIAETr9TLntXXk0Fd2IsrS4GWVVVXsrykzeExvsNnAAlDnv64Y/GXYlSwGTe43/61/8vz0vUxRZubpLD7RQGeAaUncs/HPniRQRGVyGFcOmpgHpk18Dp9jzSdiRRF1VCNy+65zjFyb6cfWmrzUfePCwBcWEs46KsmxOAnM9yNpF3itN2DU+xCqSXCNKMBz7vQAesDpswT5BW4BkqO2VS947gy/ALPmczQ3uwVPN+835+9TLuSv0PQDT1eO6HbMa7mAWIZQLaOdByzPjVHA1yzpFdbpYbC71Y8/lfgS8Bt1dVsqUfq+657wAqwpCxXVwcE+0f7noXPO2tyXccjrCrnsM6djeGrZr+30AINgDu4d+vCmshdREkE0H8k2bI66zcHo9lHOSpLpVK1LbDpPFVS/LJ6OeZhl8+0hTae5rGlk/zvGdtkszgY5Q6gRb02NITCO9cZgNNzMNY9NWiekj3cMYMxGJYQBZIsx6cMHCTcCLNpmo+ktQkoJx7BjSCQcEPxe0rE04aKGZMCmi4zcnniQVepNLqR0Dw+KvZp60mV92JNGYG6qfwblZz6SVWSeG0exommiw7z5HUibAAAAAAAAA==', color:'#000000', bg:'#f5f5f0', sold:31, features:['تغطية كروية شاملة','بودكاست وتحليلات حصرية','استلام فوري بعد الدفع'] },
+
+  { id:7, cat:'osn', brand:'OSN+', name:'اشتراك OSN+', desc:'استمتع بأحدث الأفلام والمسلسلات العالمية من HBO وWarner Bros وDisney+ حصرياً.', price:15, img:'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiMwMDAwMDAiLz48dGV4dCB4PSI1MCUiIHk9IjQ1JSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIEJsYWNrIiBmb250LXNpemU9IjU2IiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSJ3aGl0ZSI+T1NOPC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNzUlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2siIGZvbnQtc2l6ZT0iMzYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZpbGw9IiNGRkQ3MDAiPis8L3RleHQ+PC9zdmc+', color:'#FFD700', bg:'#000000', sold:22, features:['محتوى HBO حصري','أفلام ومسلسلات عالمية','استلام فوري بعد الدفع'] },
+
+  { id:8, cat:'youtube', brand:'YouTube', name:'يوتيوب بريميوم', desc:'استمتع بيوتيوب بدون إعلانات، تشغيل في الخلفية، وتحميل الفيديوهات للمشاهدة أوفلاين.', price:15, img:'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNGRjAwMDAiLz48cG9seWdvbiBwb2ludHM9Ijc1LDYwIDc1LDE0MCAxNDUsOTgiIGZpbGw9IndoaXRlIi8+PC9zdmc+', color:'#FF0000', bg:'#1a0000', sold:45, features:['بدون إعلانات نهائياً','تشغيل في الخلفية','تحميل للمشاهدة أوفلاين'] },
+
+  { id:9, cat:'amazon', brand:'Amazon Prime', name:'اشتراك أمازون برايم', desc:'استمتع بأفلام ومسلسلات أمازون أوريجينال وشحن مجاني وعروض حصرية مع Prime Video.', price:15, img:'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiMwMDQzOEEiLz48dGV4dCB4PSI1MCUiIHk9IjQwJSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIEJsYWNrIiBmb250LXNpemU9IjMwIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSJ3aGl0ZSI+cHJpbWU8L3RleHQ+PHRleHQgeD0iNTAlIiB5PSI3MCUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCBCbGFjayIgZm9udC1zaXplPSIyMiIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iI0ZGOTkwMCI+dmlkZW88L3RleHQ+PC9zdmc+', color:'#FF9900', bg:'#00438A', sold:18, features:['Prime Video حصري','أمازون أوريجينال','استلام فوري بعد الدفع'] },
 ];
 
 let cart = [];
@@ -634,6 +649,31 @@ const productPlans = {
       { name: 'شاهد VIP ربع سنوي', price: 79, desc: 'توفير 15% - 3 أشهر' },
       { name: 'شاهد VIP نصف سنوي', price: 139, desc: 'توفير 20% - 6 أشهر' },
       { name: 'شاهد VIP سنوي', price: 239, desc: 'توفير 31% - سنة كاملة' },
+    ]
+  },
+  9: { // Amazon Prime
+    title: 'اختر خطة أمازون برايم',
+    plans: [
+      { name: 'شهري', price: 25, desc: 'Prime Video + مزايا Prime' },
+      { name: 'ربع سنوي', price: 65, desc: 'توفير 13% - 3 أشهر' },
+      { name: 'سنوي', price: 219, desc: 'توفير 27% - سنة كاملة' },
+    ]
+  },
+  7: { // OSN+
+    title: 'اختر خطة OSN+',
+    plans: [
+      { name: 'شهري', price: 39, desc: 'جميع المحتوى + HBO' },
+      { name: 'ربع سنوي', price: 99, desc: 'توفير 15% - 3 أشهر' },
+      { name: 'نصف سنوي', price: 179, desc: 'توفير 23% - 6 أشهر' },
+      { name: 'سنوي', price: 299, desc: 'توفير 36% - سنة كاملة' },
+    ]
+  },
+  8: { // YouTube Premium
+    title: 'اختر خطة يوتيوب بريميوم',
+    plans: [
+      { name: 'شهري', price: 22, desc: 'بدون إعلانات + تشغيل خلفية' },
+      { name: 'ربع سنوي', price: 59, desc: 'توفير 10% - 3 أشهر' },
+      { name: 'سنوي', price: 199, desc: 'توفير 25% - سنة كاملة' },
     ]
   },
   6: { // Thamanya
@@ -943,6 +983,87 @@ function removeCoupon() {
 }
 
 
+
+
+
+
+
+// ===== TYPEWRITER =====
+(function(){
+  const full = 'FouriCard';
+  const splitAt = 5; // Fouri = 5 chars
+  let i = 0;
+  const cursor = document.getElementById('twCursor');
+  const fouriEl = document.getElementById('twFouri');
+  const cardEl = document.getElementById('twCard');
+  if(!fouriEl) return;
+
+  function type() {
+    if(i <= full.length) {
+      const current = full.substring(0, i);
+      fouriEl.textContent = current.substring(0, Math.min(i, splitAt));
+      cardEl.textContent = current.substring(splitAt);
+      i++;
+      setTimeout(type, i === 1 ? 600 : 120);
+    } else {
+      // Done typing - hide cursor after a moment then restart
+      setTimeout(() => {
+        i = 0;
+        fouriEl.textContent = '';
+        cardEl.textContent = '';
+        setTimeout(type, 800);
+      }, 3500);
+    }
+  }
+  setTimeout(type, 800);
+})();
+
+// ===== HERO PARTICLES =====
+(function(){
+  const canvas = document.getElementById('heroCanvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  function resize(){ W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
+  window.addEventListener('resize', resize);
+  resize();
+  for(let i=0; i<55; i++) particles.push({
+    x: Math.random()*1400, y: Math.random()*600,
+    r: Math.random()*2+0.5,
+    dx: (Math.random()-0.5)*0.4,
+    dy: (Math.random()-0.5)*0.4,
+    o: Math.random()*0.5+0.2
+  });
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(p=>{
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle = `rgba(229,9,20,${p.o})`;
+      ctx.fill();
+      p.x+=p.dx; p.y+=p.dy;
+      if(p.x<0||p.x>W) p.dx*=-1;
+      if(p.y<0||p.y>H) p.dy*=-1;
+    });
+    // draw lines between close particles
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y;
+        const dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<120){
+          ctx.beginPath();
+          ctx.strokeStyle=`rgba(229,9,20,${0.15*(1-dist/120)})`;
+          ctx.lineWidth=0.5;
+          ctx.moveTo(particles[i].x,particles[i].y);
+          ctx.lineTo(particles[j].x,particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
 
 // ===== COMMENTS =====
 let selectedStars = 5;
