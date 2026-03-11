@@ -203,90 +203,103 @@
   /* ===== SIDEBAR ===== */
   .sidebar-overlay {
     position: fixed; inset: 0; z-index: 299;
-    background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.3s;
+    background: rgba(0,0,0,0.75); backdrop-filter: blur(4px);
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
   }
   .sidebar-overlay.show { opacity: 1; pointer-events: all; }
 
   .sidebar {
-    position: fixed; top: 0; right: -100%;
-    width: var(--sidebar-width); max-width: 85vw;
-    height: 100vh; z-index: 300;
-    background: var(--dark);
+    position: fixed; top: 0; right: -320px;
+    width: 300px;
+    height: 100%; height: 100dvh;
+    z-index: 300;
+    background: #0f0f0f;
     border-left: 1px solid var(--border);
     display: flex; flex-direction: column;
-    transition: right 0.35s cubic-bezier(0.4,0,0.2,1);
-    overflow-y: auto;
-    box-shadow: -20px 0 60px rgba(0,0,0,0.5);
+    transition: right 0.32s cubic-bezier(0.4,0,0.2,1);
+    overflow-y: auto; overflow-x: hidden;
+    box-shadow: -20px 0 60px rgba(0,0,0,0.6);
   }
   .sidebar.open { right: 0; }
 
   .sidebar-header {
-    padding: 20px 20px 16px;
+    padding: 18px 16px 14px;
     display: flex; align-items: center; justify-content: space-between;
     border-bottom: 1px solid var(--border);
-    flex-shrink: 0;
+    flex-shrink: 0; min-height: 60px;
   }
   .sidebar-logo {
-    font-family: 'Tajawal', sans-serif; font-weight: 900; font-size: 1.4rem;
-    color: var(--white);
+    font-family: 'Tajawal', sans-serif; font-weight: 900; font-size: 1.35rem;
+    color: var(--white); white-space: nowrap;
   }
   .sidebar-logo span { color: var(--netflix); }
   .sidebar-close {
-    width: 32px; height: 32px; background: rgba(255,255,255,0.06);
-    border: 1px solid var(--border); border-radius: 8px;
+    width: 34px; height: 34px; min-width: 34px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border); border-radius: 9px;
     color: var(--gray); cursor: pointer; font-size: 1rem;
     display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
+    transition: all 0.2s; flex-shrink: 0;
   }
   .sidebar-close:hover { color: var(--white); border-color: var(--netflix); }
 
   .sidebar-user {
-    padding: 16px 20px;
+    padding: 14px 16px;
     display: flex; align-items: center; gap: 12px;
     background: rgba(229,9,20,0.05);
     border-bottom: 1px solid var(--border);
-  }
-  .sidebar-avatar {
-    width: 44px; height: 44px; background: rgba(229,9,20,0.15);
-    border: 1px solid rgba(229,9,20,0.3); border-radius: 12px;
-    display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
     flex-shrink: 0;
   }
-  .sidebar-welcome { font-weight: 700; font-size: 0.95rem; }
-  .sidebar-sub { color: var(--gray); font-size: 0.78rem; margin-top: 2px; }
+  .sidebar-avatar {
+    width: 42px; height: 42px; min-width: 42px;
+    background: rgba(229,9,20,0.15);
+    border: 1px solid rgba(229,9,20,0.3); border-radius: 11px;
+    display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+  .sidebar-welcome { font-weight: 700; font-size: 0.92rem; white-space: nowrap; }
+  .sidebar-sub { color: var(--gray); font-size: 0.76rem; margin-top: 2px; white-space: nowrap; }
 
-  .sidebar-nav { padding: 8px 12px; }
+  .sidebar-nav { padding: 6px 10px; flex-shrink: 0; }
   .sidebar-link {
-    display: flex; align-items: center; gap: 12px;
-    padding: 11px 12px; border-radius: 10px;
-    color: var(--gray-light); font-size: 0.9rem; font-weight: 600;
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: 10px;
+    color: var(--gray-light); font-size: 0.88rem; font-weight: 600;
     cursor: pointer; transition: all 0.2s;
-    text-decoration: none; margin-bottom: 2px;
-    position: relative;
+    text-decoration: none; margin-bottom: 1px;
+    white-space: nowrap; overflow: hidden;
+    min-height: 42px;
   }
   .sidebar-link:hover { background: rgba(255,255,255,0.05); color: var(--white); }
   .sidebar-link.active { background: rgba(229,9,20,0.1); color: var(--white); }
-  .sidebar-icon { font-size: 1.1rem; width: 24px; text-align: center; flex-shrink: 0; }
-  .sidebar-cart-badge {
-    position: static; margin-right: auto;
-    width: 20px; height: 20px; font-size: 0.68rem;
-    background: var(--netflix); border: none;
+  .sidebar-icon { font-size: 1rem; width: 22px; min-width: 22px; text-align: center; flex-shrink: 0; }
+  .sidebar-cart-count {
+    margin-right: auto; background: var(--netflix); color: white;
+    font-size: 0.66rem; font-weight: 900; min-width: 18px; height: 18px;
+    border-radius: 9px; display: flex; align-items: center; justify-content: center;
+    padding: 0 5px; flex-shrink: 0;
   }
 
-  .sidebar-divider { height: 1px; background: var(--border); margin: 8px 20px; }
+  .sidebar-divider { height: 1px; background: var(--border); margin: 6px 16px; flex-shrink: 0; }
   .sidebar-section-title {
-    padding: 8px 24px 4px; color: var(--gray); font-size: 0.72rem;
+    padding: 8px 22px 3px; color: var(--gray); font-size: 0.7rem;
     font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    flex-shrink: 0; white-space: nowrap;
   }
 
   .sidebar-footer {
-    margin-top: auto; padding: 16px 20px;
+    margin-top: auto; padding: 14px 16px;
     border-top: 1px solid var(--border);
-    color: var(--gray); font-size: 0.75rem;
-    display: flex; justify-content: space-between; flex-shrink: 0;
+    color: var(--gray); font-size: 0.73rem;
+    display: flex; justify-content: space-between;
+    flex-shrink: 0; white-space: nowrap; gap: 8px;
   }
+  .sidebar-social { display: flex; gap: 8px; align-items: center; }
+  .sidebar-social a {
+    color: var(--gray); text-decoration: none; font-size: 1rem;
+    transition: color 0.2s; display: flex; align-items: center;
+  }
+  .sidebar-social a:hover { color: var(--white); }
 
   /* ===== HERO ===== */
   .hero { position: relative; z-index: 1; padding: 80px 5% 60px; text-align: center; overflow: hidden; }
@@ -747,14 +760,15 @@
 
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
+
   <div class="sidebar-header">
-    <div class="sidebar-logo">Fouri<span style="color:var(--netflix)">Card</span></div>
+    <div class="sidebar-logo">Fouri<span>Card</span></div>
     <button class="sidebar-close" onclick="closeSidebar()">✕</button>
   </div>
 
   <div class="sidebar-user">
     <div class="sidebar-avatar">🛍️</div>
-    <div>
+    <div style="overflow:hidden">
       <div class="sidebar-welcome">مرحباً بك!</div>
       <div class="sidebar-sub">متجر البطاقات الرقمية</div>
     </div>
@@ -762,14 +776,14 @@
 
   <nav class="sidebar-nav">
     <a class="sidebar-link" onclick="showPage('home');closeSidebar()">
-      <span class="sidebar-icon">🏠</span> الرئيسية
+      <span class="sidebar-icon">🏠</span><span>الرئيسية</span>
     </a>
     <a class="sidebar-link" onclick="showPage('cart');closeSidebar()">
-      <span class="sidebar-icon">🛒</span> سلة التسوق
-      <div class="cart-count sidebar-cart-count" id="sidebarCartCount" style="position:static;margin-right:auto;border:none;">0</div>
+      <span class="sidebar-icon">🛒</span><span>سلة التسوق</span>
+      <span class="sidebar-cart-count" id="sidebarCartCount">0</span>
     </a>
     <a class="sidebar-link" onclick="showPage('favorites');closeSidebar()">
-      <span class="sidebar-icon">❤️</span> المفضلة
+      <span class="sidebar-icon">❤️</span><span>المفضلة</span>
     </a>
   </nav>
 
@@ -778,25 +792,25 @@
 
   <nav class="sidebar-nav">
     <a class="sidebar-link" onclick="filterFromSidebar('all')">
-      <span class="sidebar-icon">✨</span> جميع المنتجات
+      <span class="sidebar-icon">✨</span><span>جميع المنتجات</span>
     </a>
     <a class="sidebar-link" onclick="filterFromSidebar('netflix')">
-      <span class="sidebar-icon" style="color:#E50914">🎬</span> نتفليكس
+      <span class="sidebar-icon" style="color:#E50914">🎬</span><span>نتفليكس</span>
     </a>
     <a class="sidebar-link" onclick="filterFromSidebar('shahid')">
-      <span class="sidebar-icon" style="color:#00A9E0">📺</span> شاهد VIP
+      <span class="sidebar-icon" style="color:#00A9E0">📺</span><span>شاهد VIP</span>
     </a>
     <a class="sidebar-link" onclick="filterFromSidebar('thamanya')">
-      <span class="sidebar-icon">⚽</span> ثمانية
+      <span class="sidebar-icon">⚽</span><span>ثمانية</span>
     </a>
     <a class="sidebar-link" onclick="filterFromSidebar('osn')">
-      <span class="sidebar-icon" style="color:#FFD700">🎥</span> OSN+
+      <span class="sidebar-icon" style="color:#FFD700">🎥</span><span>OSN+</span>
     </a>
     <a class="sidebar-link" onclick="filterFromSidebar('youtube')">
-      <span class="sidebar-icon" style="color:#FF0000">▶️</span> يوتيوب بريميوم
+      <span class="sidebar-icon" style="color:#FF0000">▶️</span><span>يوتيوب بريميوم</span>
     </a>
     <a class="sidebar-link" onclick="filterFromSidebar('amazon')">
-      <span class="sidebar-icon" style="color:#FF9900">📦</span> أمازون برايم
+      <span class="sidebar-icon" style="color:#FF9900">📦</span><span>أمازون برايم</span>
     </a>
   </nav>
 
@@ -804,20 +818,24 @@
 
   <nav class="sidebar-nav">
     <a class="sidebar-link" onclick="document.querySelector('.about-section')?.scrollIntoView({behavior:'smooth'});showPage('home');closeSidebar()">
-      <span class="sidebar-icon">👋</span> من نحن
+      <span class="sidebar-icon">👋</span><span>من نحن</span>
     </a>
     <a class="sidebar-link" onclick="document.querySelector('.faq-section')?.scrollIntoView({behavior:'smooth'});showPage('home');closeSidebar()">
-      <span class="sidebar-icon">❓</span> أسئلة شائعة
+      <span class="sidebar-icon">❓</span><span>أسئلة شائعة</span>
     </a>
-    <a class="sidebar-link" href="https://wa.me/966551856922" target="_blank" onclick="closeSidebar()">
-      <span class="sidebar-icon" style="color:#25D366">💬</span> تواصل معنا
+    <a class="sidebar-link" id="sidebarWaLink" href="https://wa.me/966551856922" target="_blank" onclick="closeSidebar()">
+      <span class="sidebar-icon" style="color:#25D366">💬</span><span id="sidebarWaText">تواصل معنا</span>
     </a>
   </nav>
 
   <div class="sidebar-footer">
     <div>© 2025 FouriCard</div>
-    <div>🇸🇦 متجر سعودي موثوق</div>
+    <div class="sidebar-social">
+      <a id="sidebarInsta" href="https://instagram.com/fouricard" target="_blank" title="إنستقرام">📷</a>
+      <a id="sidebarTwitter" href="https://x.com/fouricard" target="_blank" title="تويتر">🐦</a>
+    </div>
   </div>
+
 </div>
 
 <!-- ===== HOME PAGE ===== -->
@@ -829,10 +847,10 @@
     <div class="hero-tag">✦ بطاقات رقمية أصلية ١٠٠٪</div>
     <h1>بطاقاتك <span class="highlight">الرقمية</span><br>بين يديك فوراً</h1>
     <p>اشترِ اشتراكات نتفليكس، شاهد، وثمانية بأسعار تنافسية واستلام فوري</p>
-    <div class="coupon-chip" onclick="navigator.clipboard.writeText('FR10');showToast('✅ تم نسخ كود الخصم!')">
+    <div class="coupon-chip" id="heroCouponChip" onclick="copyCouponCode()">
       <div>
-        <div class="coupon-chip-label">🎁 كود خصم 10% للعملاء الجدد</div>
-        <div class="coupon-chip-code">FR10</div>
+        <div class="coupon-chip-label" id="heroCouponLabel">🎁 كود خصم 10% للعملاء الجدد</div>
+        <div class="coupon-chip-code" id="heroCouponCode">FR10</div>
       </div>
       <div class="coupon-chip-btn">📋 انسخ</div>
     </div>
@@ -1020,6 +1038,7 @@
       <button class="adm-tab active" onclick="admTab('products',this)">📦 المنتجات</button>
       <button class="adm-tab" onclick="admTab('coupons',this)">🎁 الكوبونات</button>
       <button class="adm-tab" onclick="admTab('marketing',this)">📣 التسويق</button>
+      <button class="adm-tab" onclick="admTab('content',this)">✏️ المحتوى</button>
       <button class="adm-tab" onclick="admTab('settings',this)">⚙️ الإعدادات</button>
     </div>
     <div class="adm-actions">
@@ -1052,6 +1071,59 @@
         <button class="adm-btn adm-btn-red" onclick="admOpenCoupon()">＋ كوبون جديد</button>
       </div>
       <div class="adm-tbl-wrap" id="admCouponsTable"></div>
+    </div>
+
+    <!-- CONTENT TAB -->
+    <div class="adm-section" id="admSec-content">
+      <div style="font-family:'Tajawal',sans-serif;font-size:1.1rem;font-weight:900;margin-bottom:16px">محتوى الموقع</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:800px">
+
+        <!-- بطاقة الكوبون -->
+        <div style="background:#141414;border:1px solid #252525;border-radius:12px;padding:18px;grid-column:1/-1">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+            <div style="font-weight:700">🎁 بطاقة الكوبون الثابتة</div>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.82rem;color:#888">
+              <input type="checkbox" id="couponCardEnabled" checked onchange="admSaveContent()" style="width:16px;height:16px;accent-color:#E50914">
+              إظهار
+            </label>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div class="adm-form-group"><label>الكود</label><input type="text" id="ccCode" value="FR10" placeholder="FR10" style="font-family:monospace;font-size:1rem;font-weight:700"></div>
+            <div class="adm-form-group"><label>نسبة الخصم</label><input type="number" id="ccPct" value="10" placeholder="10" min="1" max="100"></div>
+            <div class="adm-form-group" style="grid-column:1/-1"><label>النص التوضيحي</label><input type="text" id="ccLabel" value="كود خصم 10% للعملاء الجدد" placeholder="نص يظهر فوق الكود"></div>
+          </div>
+          <button class="adm-btn adm-btn-red" onclick="admSaveContent()" style="margin-top:12px">💾 حفظ</button>
+        </div>
+
+        <!-- السوشيال ميديا -->
+        <div style="background:#141414;border:1px solid #252525;border-radius:12px;padding:18px">
+          <div style="font-weight:700;margin-bottom:14px">📱 روابط السوشيال ميديا</div>
+          <div class="adm-form-group" style="margin-bottom:10px">
+            <label>إنستقرام</label>
+            <input type="text" id="ccInsta" placeholder="https://instagram.com/fouricard" dir="ltr">
+          </div>
+          <div class="adm-form-group">
+            <label>تويتر / X</label>
+            <input type="text" id="ccTwitter" placeholder="https://x.com/fouricard" dir="ltr">
+          </div>
+          <button class="adm-btn adm-btn-red" onclick="admSaveContent()" style="margin-top:12px;width:100%">💾 حفظ</button>
+        </div>
+
+        <!-- معلومات التواصل -->
+        <div style="background:#141414;border:1px solid #252525;border-radius:12px;padding:18px">
+          <div style="font-weight:700;margin-bottom:14px">💬 معلومات التواصل</div>
+          <div class="adm-form-group" style="margin-bottom:10px">
+            <label>رقم واتساب</label>
+            <input type="tel" id="ccWa" placeholder="966551856922" dir="ltr">
+          </div>
+          <div class="adm-form-group">
+            <label>نص زر التواصل</label>
+            <input type="text" id="ccWaText" placeholder="تواصل معنا">
+          </div>
+          <button class="adm-btn adm-btn-red" onclick="admSaveContent()" style="margin-top:12px;width:100%">💾 حفظ</button>
+        </div>
+
+      </div>
     </div>
 
     <!-- MARKETING TAB -->
@@ -2217,6 +2289,91 @@ function admToast(msg, color) { showToast(msg); }
 
 
 document.getElementById('admPassInput')?.addEventListener('keydown', e => { if(e.key==='Enter') admDoLogin(); });
+
+// ===== CONTENT MODULE =====
+let admContent = JSON.parse(localStorage.getItem('fc_content') || '{}');
+
+function admSaveContent() {
+  admContent.couponEnabled = document.getElementById('couponCardEnabled')?.checked !== false;
+  admContent.couponCode    = document.getElementById('ccCode')?.value?.trim() || 'FR10';
+  admContent.couponPct     = parseInt(document.getElementById('ccPct')?.value) || 10;
+  admContent.couponLabel   = document.getElementById('ccLabel')?.value?.trim() || '';
+  admContent.insta         = document.getElementById('ccInsta')?.value?.trim() || '';
+  admContent.twitter       = document.getElementById('ccTwitter')?.value?.trim() || '';
+  admContent.wa            = document.getElementById('ccWa')?.value?.trim() || '';
+  admContent.waText        = document.getElementById('ccWaText')?.value?.trim() || '';
+  localStorage.setItem('fc_content', JSON.stringify(admContent));
+  applyContent();
+  admToast('✅ تم حفظ المحتوى!');
+}
+
+function admLoadContent() {
+  const c = admContent;
+  if(document.getElementById('couponCardEnabled')) document.getElementById('couponCardEnabled').checked = c.couponEnabled !== false;
+  if(document.getElementById('ccCode')) document.getElementById('ccCode').value = c.couponCode || 'FR10';
+  if(document.getElementById('ccPct')) document.getElementById('ccPct').value = c.couponPct || 10;
+  if(document.getElementById('ccLabel')) document.getElementById('ccLabel').value = c.couponLabel || 'كود خصم 10% للعملاء الجدد';
+  if(document.getElementById('ccInsta')) document.getElementById('ccInsta').value = c.insta || 'https://instagram.com/fouricard';
+  if(document.getElementById('ccTwitter')) document.getElementById('ccTwitter').value = c.twitter || 'https://x.com/fouricard';
+  if(document.getElementById('ccWa')) document.getElementById('ccWa').value = c.wa || '966551856922';
+  if(document.getElementById('ccWaText')) document.getElementById('ccWaText').value = c.waText || 'تواصل معنا';
+}
+
+function applyContent() {
+  const c = JSON.parse(localStorage.getItem('fc_content') || '{}');
+
+  // Coupon chip
+  const chip = document.getElementById('heroCouponChip');
+  if(chip) chip.style.display = c.couponEnabled === false ? 'none' : 'inline-flex';
+  const codeEl = document.getElementById('heroCouponCode');
+  if(codeEl) codeEl.textContent = c.couponCode || 'FR10';
+  const labelEl = document.getElementById('heroCouponLabel');
+  if(labelEl) labelEl.textContent = '🎁 ' + (c.couponLabel || 'كود خصم 10% للعملاء الجدد');
+
+  // Social links
+  const instaEl = document.getElementById('sidebarInsta');
+  if(instaEl && c.insta) instaEl.href = c.insta;
+  const twitterEl = document.getElementById('sidebarTwitter');
+  if(twitterEl && c.twitter) twitterEl.href = c.twitter;
+
+  // WhatsApp
+  const waLink = document.getElementById('sidebarWaLink');
+  const waNum = c.wa || '966551856922';
+  if(waLink) waLink.href = 'https://wa.me/' + waNum;
+  const waTextEl = document.getElementById('sidebarWaText');
+  if(waTextEl) waTextEl.textContent = c.waText || 'تواصل معنا';
+
+  // Update all wa links in page
+  document.querySelectorAll('a[href*="wa.me"]').forEach(a => {
+    if(a.id !== 'sidebarWaLink') a.href = 'https://wa.me/' + waNum;
+  });
+}
+
+function copyCouponCode() {
+  const c = JSON.parse(localStorage.getItem('fc_content') || '{}');
+  const code = c.couponCode || 'FR10';
+  navigator.clipboard?.writeText(code).catch(()=>{});
+  showToast('✅ تم نسخ كود الخصم: ' + code);
+}
+
+// Override admTab to load content tab
+const _baseAdmTab = window.admTab;
+window.admTab = function(id, el) {
+  document.querySelectorAll('.adm-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.adm-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('admSec-' + id).classList.add('active');
+  el.classList.add('active');
+  if(id === 'marketing') admLoadMarketing();
+  if(id === 'content') admLoadContent();
+  if(id === 'settings') {
+    if(document.getElementById('maintEnabled')) document.getElementById('maintEnabled').checked = !!admSettings.maintenance;
+    if(document.getElementById('maintMsgInput')) document.getElementById('maintMsgInput').value = admSettings.maintMsg || '';
+    if(document.getElementById('admWaNum')) document.getElementById('admWaNum').value = admSettings.waNumber || '966551856922';
+  }
+};
+
+// Apply content on load
+applyContent();
 
 // ===== MARKETING MODULE =====
 let admMarketing = JSON.parse(localStorage.getItem('fc_marketing') || '{}');
