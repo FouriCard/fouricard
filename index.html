@@ -417,12 +417,45 @@
   @media (max-width: 700px) { .footer-top { grid-template-columns: 1fr; } .footer-bottom { flex-direction: column; text-align: center; } }
 
   @media (max-width: 700px) {
-  .price-big { font-size: 1.6rem; }
-  .price-label { font-size: 0.7rem; }
+    .price-big { font-size: 1.6rem; }
+    .price-label { font-size: 0.7rem; }
     .product-detail { grid-template-columns: 1fr; }
     .products { grid-template-columns: 1fr; padding: 0 4% 60px; }
-    nav { padding: 0 4%; }
+    nav { padding: 0 4%; height: 56px; }
+    .logo { font-size: 1.15rem; }
+    .nav-badge { display: none; }
+    .cart-btn { padding: 6px 10px; font-size: 0.75rem; gap: 5px; border-radius: 14px; }
+    .nav-actions { gap: 6px; }
+    .nav-text { display: none; }
+    .cart-count, .fav-count-badge { width: 16px; height: 16px; font-size: 0.65rem; }
+    .hero { padding: 50px 4% 40px; }
+    .hero h1 { font-size: 2rem; }
+    .hero p { font-size: 0.92rem; }
+    .hero-stats { gap: 20px; }
+    .stat-num { font-size: 1.4rem; }
+    .filters { padding: 0 4% 28px; gap: 8px; }
+    .filter-btn { padding: 7px 14px; font-size: 0.8rem; }
+    .trust-strip { padding: 18px 16px; gap: 14px; }
+    .trust-icon { font-size: 1.4rem; }
+    .trust-text strong { font-size: 0.82rem; }
+    .trust-text span { font-size: 0.72rem; }
+    .product-page { padding: 24px 4%; }
+    .product-visual { padding: 36px 20px; }
+    .product-visual .big-logo { width: 90px; height: 90px; font-size: 3.5rem; }
+    .product-visual h2 { font-size: 1.4rem; }
+    .product-info h1 { font-size: 1.5rem; }
+    .add-cart-btn { font-size: 0.92rem; padding: 12px; }
+    .gift-btn { font-size: 0.82rem; padding: 10px; }
+    .cart-page { padding: 24px 4%; }
+    .cart-page h1 { font-size: 1.5rem; }
+    .summary-total .total-price { font-size: 1.4rem; }
+    .checkout-btn { font-size: 0.92rem; padding: 13px; }
+    .modal-box { padding: 22px 18px; }
+    .modal-title { font-size: 1.1rem; }
+    .section-title { padding: 0 4% 22px; }
+    .section-title h2 { font-size: 1.2rem; }
   }
+
 </style>
 </head>
 <body>
@@ -435,11 +468,11 @@
 <nav>
   <div class="nav-actions">
     <button class="cart-btn" onclick="showPage('favorites')" style="gap:6px" title="المفضلة">
-      ❤️ المفضلة
+      ❤️ <span class="nav-text">المفضلة</span>
       <div class="fav-count-badge" id="favCount">0</div>
     </button>
     <button class="cart-btn" onclick="showPage('cart')">
-      🛒 السلة
+      🛒 <span class="nav-text">السلة</span>
       <div class="cart-count" id="cartCount">0</div>
     </button>
   </div>
