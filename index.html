@@ -1152,7 +1152,6 @@ let selectedPlan = null;
 function openProduct(id) {
   currentProduct = products.find(p => p.id === id);
   const p = currentProduct;
-  const plans = productPlans[id];
   selectedPlan = null;
 
   document.getElementById('productVisual').innerHTML = `
@@ -1161,10 +1160,19 @@ function openProduct(id) {
     <p>${p.name}</p>
   `;
 
-  const plansHTML = plans ? `
+  // تحديد الخطط: من المنتج نفسه (أدمن) أو من productPlans الثابتة
+  const prodPlans = p.plans && p.plans.length > 0 ? p.plans : (productPlans[id] ? productPlans[id].plans : null);
+  const plansTitle = productPlans[id] ? productPlans[id].title : 'اختر خطة:';
+
+  // إذا ما في خطط، حدد السعر الأساسي تلقائياً
+  if (!prodPlans) {
+    selectedPlan = { index: 0, price: p.price, name: p.name };
+  }
+
+  const plansHTML = prodPlans ? `
     <div class="features-list">
-      <h3>${plans.title}:</h3>
-      ${id === 1 ? `<div style="overflow-x:auto;margin-bottom:8px">
+      <h3>${plansTitle}:</h3>
+      ${id === 1 && !p.plans ? `<div style="overflow-x:auto;margin-bottom:8px">
         <table class="compare-table">
           <tr><th>الخطة</th><th>الإعلانات</th><th>الجودة</th><th>الشاشات</th><th>السعر</th></tr>
           <tr><td>مع إعلانات</td><td class="compare-x">✗</td><td>HD</td><td>1</td><td>23 ر.س</td></tr>
@@ -1174,12 +1182,12 @@ function openProduct(id) {
         </table>
       </div>` : ''}
       <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px">
-        ${plans.plans.map((plan, i) => `
+        ${prodPlans.map((plan, i) => `
           <div class="plan-option" id="plan-${i}" onclick="selectPlan(${i}, ${plan.price}, '${plan.name}')">
             <div style="font-family:'Tajawal',sans-serif;font-size:1.15rem;font-weight:900;color:#E50914">${plan.price} ر.س</div>
             <div style="text-align:right">
               <div style="font-weight:700;font-size:0.92rem">${plan.name}</div>
-              <div style="color:var(--gray);font-size:0.78rem">${plan.desc}</div>
+              <div style="color:var(--gray);font-size:0.78rem">${plan.desc||''}</div>
             </div>
           </div>
         `).join('')}
@@ -1188,7 +1196,7 @@ function openProduct(id) {
   ` : `
     <div class="features-list">
       <h3>ما يشمله المنتج:</h3>
-      ${p.features.map(f => `<div class="feat-item"><div class="feat-check" style="background:${p.color};color:white">✓</div>${f}</div>`).join('')}
+      ${(p.features||[]).map(f => `<div class="feat-item"><div class="feat-check" style="background:${p.color};color:white">✓</div>${f}</div>`).join('')}
     </div>
   `;
 
@@ -1197,8 +1205,8 @@ function openProduct(id) {
     <p class="desc">${p.desc}</p>
     ${plansHTML}
     <div class="price-box">
-      <div class="price-label" style="font-size:0.78rem;color:var(--gray)">السعر المختار</div>
-      <div class="price-big" id="selectedPrice" style="color:#E50914">اختر خطة</div>
+      <div class="price-label" style="font-size:0.78rem;color:var(--gray)">${prodPlans ? 'السعر المختار' : 'السعر'}</div>
+      <div class="price-big" id="selectedPrice" style="color:#E50914">${prodPlans ? 'اختر خطة' : (p.price + ' ر.س')}</div>
       <div class="price-note">استلام فوري بعد تأكيد الدفع</div>
       <div class="qty-selector">
         <span class="qty-label">الكمية:</span>
@@ -1233,7 +1241,8 @@ function changeQty(delta) {
 
 function addToCartWithQty() {
   if(!selectedPlan) { showToast('⚠️ اختر خطة أولاً'); return; }
-  const itemToAdd = {...currentProduct, price: selectedPlan.price, name: currentProduct.brand + ' - ' + selectedPlan.name, cartId: currentProduct.id + '-' + selectedPlan.name};
+  const planName = selectedPlan.name === currentProduct.name ? currentProduct.name : currentProduct.brand + ' - ' + selectedPlan.name;
+  const itemToAdd = {...currentProduct, price: selectedPlan.price, name: planName, cartId: currentProduct.id + '-' + selectedPlan.name};
   const existing = cart.find(i => i.cartId === itemToAdd.cartId);
   if(existing) existing.qty += currentQty;
   else cart.push({...itemToAdd, qty: currentQty});
