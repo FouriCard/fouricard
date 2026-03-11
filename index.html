@@ -155,22 +155,6 @@
     gap: 16px;
   }
 
-  .hamburger {
-    width: 40px; height: 40px; background: var(--card-bg);
-    border: 1px solid var(--border); border-radius: 10px;
-    display: flex; flex-direction: column; align-items: center;
-    justify-content: center; gap: 5px; cursor: pointer;
-    transition: all 0.25s; flex-shrink: 0;
-  }
-  .hamburger:hover { border-color: var(--netflix); background: rgba(229,9,20,0.08); }
-  .hamburger span {
-    display: block; width: 18px; height: 2px;
-    background: var(--white); border-radius: 2px;
-    transition: all 0.3s;
-  }
-  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
   .logo {
     font-family: 'Tajawal', sans-serif; font-weight: 900;
@@ -199,79 +183,6 @@
   }
   .fav-count-badge { background: #ff4d6d; display: none; }
   .fav-count-badge.show { display: flex; }
-
-  /* ===== SIDEBAR ===== */
-  .sidebar-overlay {
-    position: fixed; inset: 0; z-index: 299;
-    background: rgba(0,0,0,0.75); backdrop-filter: blur(4px);
-    opacity: 0; pointer-events: none; transition: opacity 0.3s;
-  }
-  .sidebar-overlay.show { opacity: 1; pointer-events: all; }
-
-  .sidebar {
-    position: fixed; top: 0; right: -100%;
-    width: min(280px, 85vw);
-    height: 100%; height: 100dvh;
-    z-index: 300;
-    background: #0f0f0f;
-    border-left: 1px solid var(--border);
-    display: flex; flex-direction: column;
-    transition: right 0.32s cubic-bezier(0.4,0,0.2,1);
-    overflow-y: auto; overflow-x: hidden;
-    box-shadow: -20px 0 60px rgba(0,0,0,0.6);
-  }
-  .sidebar.open { right: 0; }
-
-  .sidebar-header {
-    padding: 16px 18px;
-    display: flex; align-items: center; justify-content: space-between;
-    border-bottom: 1px solid var(--border); flex-shrink: 0;
-  }
-  .sidebar-logo { font-family: 'Tajawal', sans-serif; font-weight: 900; font-size: 1.3rem; color: var(--white); }
-  .sidebar-logo span { color: var(--netflix); }
-  .sidebar-close {
-    width: 32px; height: 32px; min-width: 32px;
-    background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px;
-    color: var(--gray); cursor: pointer; font-size: 1rem;
-    display: flex; align-items: center; justify-content: center; transition: all 0.2s;
-  }
-  .sidebar-close:hover { color: var(--white); border-color: var(--netflix); }
-
-  .sidebar-user {
-    padding: 14px 18px; display: flex; align-items: center; gap: 10px;
-    background: rgba(229,9,20,0.05); border-bottom: 1px solid var(--border); flex-shrink: 0;
-  }
-  .sidebar-avatar {
-    width: 38px; height: 38px; min-width: 38px;
-    background: rgba(229,9,20,0.15); border: 1px solid rgba(229,9,20,0.3); border-radius: 10px;
-    display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
-  }
-  .sidebar-welcome { font-weight: 700; font-size: 0.88rem; }
-  .sidebar-sub { color: var(--gray); font-size: 0.74rem; margin-top: 1px; }
-
-  .sidebar-nav { padding: 6px 10px; flex-shrink: 0; }
-  .sidebar-link {
-    display: block; padding: 10px 14px; border-radius: 10px;
-    color: var(--gray-light); font-size: 0.9rem; font-weight: 600;
-    cursor: pointer; transition: all 0.2s; text-decoration: none; margin-bottom: 2px;
-  }
-  .sidebar-link:hover { background: rgba(255,255,255,0.05); color: var(--white); }
-  .sidebar-link.active { background: rgba(229,9,20,0.1); color: var(--white); }
-
-  .sidebar-divider { height: 1px; background: var(--border); margin: 4px 14px; }
-  .sidebar-section-title {
-    padding: 8px 24px 2px; color: var(--gray); font-size: 0.68rem;
-    font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
-  }
-  .sidebar-footer {
-    margin-top: auto; padding: 12px 18px; border-top: 1px solid var(--border);
-    color: var(--gray); font-size: 0.72rem;
-    display: flex; justify-content: space-between; align-items: center;
-    flex-shrink: 0; gap: 8px;
-  }
-  .sidebar-social { display: flex; gap: 10px; }
-  .sidebar-social a { color: var(--gray); text-decoration: none; font-size: 0.95rem; transition: color 0.2s; }
-  .sidebar-social a:hover { color: var(--white); }
 
   /* ===== HERO ===== */
   .hero { position: relative; z-index: 1; padding: 80px 5% 60px; text-align: center; overflow: hidden; }
@@ -713,9 +624,7 @@
 
 <!-- NAVBAR -->
 <nav>
-  <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="القائمة">
-    <span></span><span></span><span></span>
-  </button>
+
   <div class="logo" onclick="showPage('home')">Fouri<span>Card</span></div>
   <div class="nav-actions">
     <button class="nav-icon-btn" onclick="showPage('favorites')" title="المفضلة">
@@ -726,53 +635,6 @@
     </button>
   </div>
 </nav>
-
-<!-- SIDEBAR OVERLAY -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
-<!-- SIDEBAR -->
-<div class="sidebar" id="sidebar">
-  <div class="sidebar-header">
-    <div class="sidebar-logo">Fouri<span>Card</span></div>
-    <button class="sidebar-close" onclick="closeSidebar()">✕</button>
-  </div>
-  <div class="sidebar-user">
-    <div class="sidebar-avatar">🛍️</div>
-    <div>
-      <div class="sidebar-welcome">مرحباً بك!</div>
-      <div class="sidebar-sub">متجر البطاقات الرقمية</div>
-    </div>
-  </div>
-  <nav class="sidebar-nav">
-    <a class="sidebar-link" onclick="showPage('home');closeSidebar()">الرئيسية</a>
-    <a class="sidebar-link" onclick="showPage('cart');closeSidebar()">سلة التسوق</a>
-    <a class="sidebar-link" onclick="showPage('favorites');closeSidebar()">المفضلة</a>
-  </nav>
-  <div class="sidebar-divider"></div>
-  <div class="sidebar-section-title">تصفح حسب الفئة</div>
-  <nav class="sidebar-nav">
-    <a class="sidebar-link" onclick="filterFromSidebar('all')">جميع المنتجات</a>
-    <a class="sidebar-link" onclick="filterFromSidebar('netflix')">نتفليكس</a>
-    <a class="sidebar-link" onclick="filterFromSidebar('shahid')">شاهد VIP</a>
-    <a class="sidebar-link" onclick="filterFromSidebar('thamanya')">ثمانية</a>
-    <a class="sidebar-link" onclick="filterFromSidebar('osn')">OSN+</a>
-    <a class="sidebar-link" onclick="filterFromSidebar('youtube')">يوتيوب بريميوم</a>
-    <a class="sidebar-link" onclick="filterFromSidebar('amazon')">أمازون برايم</a>
-  </nav>
-  <div class="sidebar-divider"></div>
-  <nav class="sidebar-nav">
-    <a class="sidebar-link" onclick="document.querySelector('.about-section')?.scrollIntoView({behavior:'smooth'});showPage('home');closeSidebar()">من نحن</a>
-    <a class="sidebar-link" onclick="document.querySelector('.faq-section')?.scrollIntoView({behavior:'smooth'});showPage('home');closeSidebar()">أسئلة شائعة</a>
-    <a class="sidebar-link" id="sidebarWaLink" href="https://wa.me/966551856922" target="_blank" onclick="closeSidebar()"><span id="sidebarWaText">تواصل معنا</span></a>
-  </nav>
-  <div class="sidebar-footer">
-    <div>© 2025 FouriCard</div>
-    <div class="sidebar-social">
-      <a id="sidebarInsta" href="https://instagram.com/fouricard" target="_blank">📷</a>
-      <a id="sidebarTwitter" href="https://x.com/fouricard" target="_blank">🐦</a>
-    </div>
-  </div>
-</div>
 
 
 <!-- ===== HOME PAGE ===== -->
@@ -1633,7 +1495,7 @@ function addToCartWithQty() {
 function updateCartCount() {
   const total = cart.reduce((s,i) => s+i.qty, 0);
   document.getElementById('cartCount').textContent = total;
-  const sc = document.getElementById('sidebarCartCount');
+  const sc = document.getElementById('sidebarCartCountX');
   if(sc) sc.textContent = total;
   try { sessionStorage.setItem('fouriCart', JSON.stringify(cart)); } catch(e) {}
 }
@@ -1920,12 +1782,9 @@ function toggleFaq(el) {
 renderProducts();
 setStars(5);
 renderComments();
-// Start notifs only if enabled in admin
 (function() {
   const m = JSON.parse(localStorage.getItem('fc_marketing') || '{}');
-  if(m.notifsEnabled !== false) {
-    setTimeout(showNextNotif, 5000);
-  }
+  if(m.notifsEnabled !== false) setTimeout(showNextNotif, 5000);
 })();
 try {
   const saved = sessionStorage.getItem('fouriCart');
@@ -2343,13 +2202,6 @@ function admSaveMarketing() {
 
   localStorage.setItem('fc_marketing', JSON.stringify(admMarketing));
   applyMarketing();
-  // Restart or stop notifications live
-  const liveNotif = document.getElementById('liveNotif');
-  if(liveNotif) liveNotif.classList.remove('show');
-  if(notifsEnabled) {
-    notifIndex = 0;
-    setTimeout(showNextNotif, 1000);
-  }
   admToast('✅ تم الحفظ!');
 }
 
